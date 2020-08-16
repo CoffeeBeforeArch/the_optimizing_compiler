@@ -1,0 +1,6 @@
+[book]
+authors = ["Nick"]
+language = "en"
+multilingual = false
+src = "src"
+title = "The Optimizing Compiler"

@@ -10,5 +10,5 @@ If you care about performance, then you care about the code your compiler genera
 
 This book assumes that the reader is familiar with C++ and the basic steps of compilation. Additionally, the reader should have a basic understanding of how assembly looks/functions.
 
-However, this book takes a practical apprach to reading and understanding assembly. We will not be examining every line of assembly in our executables,  and trying to find out exactly what it's for. What we will be doing is extracting the important snippets, and analyzing them in detail.
+However, this book takes a practical apprach to reading and understanding assembly. We will not be examining every line of assembly in every example. What we will be doing is extracting the important snippets, and analyzing them in detail, similar to who you would approach trying to understand a large codebase you are unfamiliar with.
 

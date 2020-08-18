@@ -14,3 +14,4 @@
 
 - [Chapter 7 - Strength Reduction](./chapter_7.md)
 
+- [Chapter 8 - Link-Time Optimization (LTO)](./chapter_8.md)

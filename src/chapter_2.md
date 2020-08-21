@@ -131,7 +131,34 @@ What happens if we tell the compiler to ingore these type-based aliasing rules? 
   26:	c3                   	retq   
 ```
 
-A very different result! Functionally, it's performing the same thing as our first example that suffered fom aliasing, with some extra instructions to and from floating point numbers.
+A very different result! Functionally, it's performing the same thing as our first example that suffered fom aliasing, with some extra instructions that covert to and from floating point numbers. However, deciphering exactly how can be a little difficult because of the instruction scheduling. Let's break down exactly what is going on.
+
+The first `movl` instruction stores `4` in `a`. The following two `vmovss` instructions load the floating point representation of `5` in the `xmm1` register, and then into `b`. Next, `a` is re-loaded from memory. This is done by first zeroing out the `xmm0` register using `vxorps`, then using `vcvtsi2ssl`, to convert an integer into a single precision number. Then, `a` and `b` are added together with a `vaddss`. Finally the value is converted from a floating point number to an integer using `vcvttss2si`, and returned through the `eax` register.
 
 ## Additional Notes
+
+What happens when `a` and `b` are set to the same value? Does our compiler still generate the sub-optimal assembly that re-loads `a` after the store to `b`? Let's take a look. Here, we set both `a` and `b` to the value `5`.
+
+```cpp
+int inc_and_add(int & a, int & b) {
+  // Set the values of a and b
+  a = 5;
+  b = 5;
+
+  // Return their sum
+  return a + b;
+}
+```
+
+And here is the generated assembly.
+
+```assembly
+0000000000000000 <inc_and_add(int&, int&)>:
+   0:	c7 07 05 00 00 00    	movl   $0x5,(%rdi)
+   6:	b8 0a 00 00 00       	mov    $0xa,%eax
+   b:	c7 06 05 00 00 00    	movl   $0x5,(%rsi)
+  11:	c3                   	retq   
+```
+
+Our compiler is able to pre-compute the result (`10`/`0xa`), and is not forced to re-load `a` after the store to `b`. Because `a` and `b` are set to the same value (`5`), the returned value from the function is the same whether or not `a` and `b` alias each other. This was not true for any of our other aliasing examples.
 

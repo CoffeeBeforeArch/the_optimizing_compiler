@@ -8,5 +8,9 @@ In this section, we'll be looking at how the compiler may replace branches with 
 
 ## Costly Branches
 
+A branch is costly if it is difficult to predict the outcome or target.
+
 ## Predicated Move Instructions
+
+Some conditional jumps can be transformed into branch-less equivilants. The optimization passes `-fif-conversion` and `-fif-conversion2` are the primary optimization flags for doing this with GCC. These are enabled at all optimization levels except `-Og`.
 
